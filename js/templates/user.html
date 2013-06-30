@@ -1,0 +1,6 @@
+
+<img class='pull-right' src="http://www.gravatar.com/avatar/<%= user.gravatar_id %>?s=150"></img>
+<h1><%= user.name %></h1>
+<% _.each(user, function(item) {%>
+	<p><%= item %></p>
+<% }); %>

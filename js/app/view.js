@@ -3,8 +3,9 @@ define([
     'underscore',
     'backbone',
     'text!template/container.html',
-    'text!template/project.html'
-], function($, _, Backbone, containerTemplate, repoTemplate) {
+    'text!template/project.html',
+    'text!template/user.html'
+], function($, _, Backbone, containerTemplate, repoTemplate, userTemplate) {
 
     var RepoView = Backbone.View.extend({
         template : _.template(repoTemplate),
@@ -17,8 +18,24 @@ define([
         },
 
         render: function() {
-            //console.log(this.model.toJSON());
             this.$el.html(this.template(this.model.toJSON()));
+            return this;
+        }
+    });
+
+    var UserView = Backbone.View.extend({
+        template : _.template(userTemplate),
+
+        class : 'user',
+
+        initialize: function() {
+            _.bindAll(this);
+            this.render();
+            console.log(this);
+        },
+
+        render: function() {
+            this.$el.html(this.template({'user' : this.model.toJSON()}));
             return this;
         }
     });
@@ -38,14 +55,29 @@ define([
             }, this);
         },
 
-        addOneProject: function(repo) {
+        addOneRepo: function(repo) {
             if ((this.model.get('local_data') || !repo.get('fork')) && repo.get('show')) {
+
+                var el = '<div class="project"></div>'
+
                 var repoView = new RepoView({
-                        model : repo
+                        model : repo,
+                        el : el
                 });
 
-                this.$el.find('.holder').append(repoView.$el);
+                this.$el.find('.holder').append(repoView.el);
             }
+        },
+
+        addUser: function(user) {
+            var $el = this.$el.find('.user')
+
+            var userView = new UserView({
+                model : user,
+                $el : $el
+            });
+
+            $el.html(userView.el);
         },
 
         render: function() {
@@ -53,7 +85,8 @@ define([
             console.log(this.model.toJSON());
 
             this.$el.css('opacity', 0).html(this.template(this.model.toJSON()));
-            this.model.get('repos').each(this.addOneProject);
+            this.addUser(this.model.get('user'));
+            this.model.get('repos').each(this.addOneRepo);
 
             $('#shell').html(this.$el.fadeTo('375', 1));
             return this;
