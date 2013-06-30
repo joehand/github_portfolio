@@ -1,33 +1,29 @@
-define([ 'jquery', 'backbone'], function($, Backbone) {
+define(['backbone', 'underscore'], function(Backbone, _) {
     var MainModel = Backbone.Model.extend({
         url: '/github_data.json',
 
         initialize : function(attrs, options) {
-            console.log(this);
             var main = this;
 
             this.config = options;
             this.on('change:local_data', this.checkDataReady);
+            this.initModels(attrs.user, attrs.repos); //start with the bootstrap data
 
-            this.fetch({
-                success: function(data, resp) {
-                    $.extend(resp.user, attrs.user);
-                    $.extend(resp.repos, attrs.repos);
+            //Figure out which kind of data to use
+            if (this.config.use_api) {
+                this.initRemoteData();
+            } else {
+                this.initLocalData();
+            }
+        },
 
-                    //init models with all the local data
-                    main.initModels(resp.user, resp.repos)
-                    main.set('local_data', true);
-                },
-                error: function() {
-                    // no local data, will just use github api
-                    console.warn('no local data, asking github');
-                    main.set('local_data', false);
+        parse : function(resp) {
+            //Combine old data with new data 
+            var user = _.extend(resp.user, this.get('user').toJSON());
+            var repos =  this.get('repos').merge(this.get('repos').toJSON(), resp.repos);
 
-                    // init models so we can change urls and fetch
-                    main.initModels(attrs.user, attrs.repos);
-                    main.fetchRemoteData();
-                }
-            });
+            // Just set new models; Don't actually return a response.
+            this.initModels(user, repos);
         },
 
         initModels : function(user, repos) {
@@ -51,10 +47,32 @@ define([ 'jquery', 'backbone'], function($, Backbone) {
             }
         },
 
+        initLocalData : function() {
+            var main = this;
+
+            this.fetch({
+                success: function() {
+                    console.log('Using Local Data - woot');
+                    //auto init models with all the local data
+                    main.set('local_data', true);
+                },
+                error: function() {
+                    // no local data, will just use github api
+                    console.warn('no local data, asking github');
+                    main.initRemoteData();
+                }
+            });
+        },
+
+        initRemoteData : function() {
+            console.log('Using GitHub API data');
+            this.set('local_data', false);
+            this.fetchRemoteData();
+        },
+
         fetchRemoteData : function() {
             var main = this,
                 remote_url = 'https://api.github.com/users/' + this.config.github_user;
-
 
             // update to use github API urls
             this.get('user').url = remote_url;
@@ -62,9 +80,9 @@ define([ 'jquery', 'backbone'], function($, Backbone) {
 
             // fetch user info
             this.get('user').fetch({
-                success: function(data, textStatus, request) {
-                    console.warn('Remaining Github Requests: ' + request.xhr.getResponseHeader('X-RateLimit-Remaining'));
-                    
+                success: function(model, response, options) {
+                    console.warn('Remaining Github Requests: ' + options.xhr.getResponseHeader('X-RateLimit-Remaining'));
+
                     fetched = main.get('remote_fetched') + 1;
                     main.set('remote_fetched', fetched);
                 }
@@ -72,7 +90,7 @@ define([ 'jquery', 'backbone'], function($, Backbone) {
 
             //fetch repositories
             this.get('repos').fetch({
-                success: function(data, textStatus, request) {
+                success: function(models, response, options) {
                     fetched = main.get('remote_fetched') + 1;
                     main.set('remote_fetched', fetched);
                 }
@@ -81,7 +99,14 @@ define([ 'jquery', 'backbone'], function($, Backbone) {
     });
     
     // Our basic user and repo models/collections
-    var User = Backbone.Model.extend({}),
+    var User = Backbone.Model.extend({
+            parse : function(resp, options) {
+                //This only runs when getting API data
+                //need to keep our old data in. anything in there overwrites API stuff
+                _.extend(resp, this.toJSON());
+                return resp;
+            }
+        }),
         Repo = Backbone.Model.extend({
             defaults : {
                         "created_at"    : null, 
@@ -99,7 +124,28 @@ define([ 'jquery', 'backbone'], function($, Backbone) {
             }
         }),
         Repos = Backbone.Collection.extend({
-            model: Repo
+            model: Repo,
+
+            parse : function(resp) {
+                //This only runs when getting API data
+                //need to keep our old data in. anything in there overwrites API stuff
+                return this.merge(this.toJSON(), resp);
+            },
+
+            merge: function(origRepos, newRepos) {
+                //Merge the two sets of repos. Check for uniqueness w/ name & id
+                _.each(newRepos, function(repo) {
+                    var match = _.find(origRepos, function(r){ return r.name == repo.name || r.id == repo.id; });
+
+                    if (match) {
+                        match.match = true;
+                        _.extend(repo, match);
+                    }
+                });
+
+                //Return the merged array of Repositories
+                return newRepos.concat(_.filter(origRepos, function(r){ return !r.match; }));
+            }
         });
 
 

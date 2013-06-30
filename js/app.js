@@ -37,6 +37,4 @@ require([
                 model : mainModel,
                 class : 'container'
             });
-
-        console.log(mainView);
 });
