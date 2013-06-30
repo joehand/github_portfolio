@@ -1,8 +1,8 @@
-<article class="project span4">
+<article class="span12">
     <h3 class="title"><% if (title) { %><%= title %><% } else { %><%= name %><% } %></h3>    
     <div class="projectInfo">
-        <p class="description"><%= description %></p>
-        <ul class="skillset">
+        <p class="description span4"><%= description %></p>
+        <ul class="skillset span4">
             <% if (language) { %>
                 <li><%= language %></li>
             <% } %>
@@ -16,7 +16,7 @@
     </div>
           
         <% if (img) { %>
-    <div class="projectImages">
+    <div class="projectImages span4">
         <ul id="">
             <li><img src="<%= img %>" alt=""/></li>
         </ul>
