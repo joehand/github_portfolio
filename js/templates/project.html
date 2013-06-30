@@ -1,0 +1,25 @@
+<article class="project span4">
+    <h3 class="title"><% if (title) { %><%= title %><% } else { %><%= name %><% } %></h3>    
+    <div class="projectInfo">
+        <p class="description"><%= description %></p>
+        <ul class="skillset">
+            <% if (language) { %>
+                <li><%= language %></li>
+            <% } %>
+            
+        </ul>
+        <% if (homepage) { %>
+            <p><a class="sitelink" target="_blank" href="<%= homepage %>">view the project</a></p>
+        <% } %>
+
+        <p><a class="github" target="_blank" href="<%= html_url %>">code on github</a></p>
+    </div>
+          
+        <% if (img) { %>
+    <div class="projectImages">
+        <ul id="">
+            <li><img src="<%= img %>" alt=""/></li>
+        </ul>
+    </div>
+        <% } %>
+</article>
