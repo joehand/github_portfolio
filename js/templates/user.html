@@ -1,6 +1,13 @@
-
-<img class='pull-right' src="http://www.gravatar.com/avatar/<%= user.gravatar_id %>?s=150"></img>
-<h1><%= user.name %></h1>
-<% _.each(user, function(item) {%>
-	<p><%= item %></p>
-<% }); %>
+<div class='span12'>
+	<div class='center user-header text-center'>
+		<img class='center img-circle' src='http://www.gravatar.com/avatar/<%= user.gravatar_id %>?s=120' alt='<%= user.name %>' title='<%= user.name %>'></img>
+		<h1 class='center'><%= user.name %></h1>
+		<% if (user.company) { %>
+			<h5 class='center muted'><%= user.company %></h5>
+		<% } else if (user.location) { %>
+			<h5 class='center muted'><%= user.location %></h5>
+		<% } %>
+	</div>
+	<hr>
+	<p class="bio lead center text-center"><%= user.bio %></p>
+</div>

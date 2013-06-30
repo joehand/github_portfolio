@@ -31,7 +31,6 @@ define([
         initialize: function() {
             _.bindAll(this);
             this.render();
-            console.log(this);
         },
 
         render: function() {
@@ -45,6 +44,11 @@ define([
     var MainView = Backbone.View.extend({
         template : _.template(containerTemplate),
 
+        subViews : {
+            'user'  : '.user-container',
+            'repos' : '.projects-container'
+        },
+
         initialize: function() {
             _.bindAll(this);
             //watch for our model to be ready then render if its is
@@ -57,27 +61,22 @@ define([
 
         addOneRepo: function(repo) {
             if ((this.model.get('local_data') || !repo.get('fork')) && repo.get('show')) {
-
-                var el = '<div class="project"></div>'
-
                 var repoView = new RepoView({
                         model : repo,
-                        el : el
+                        el : '<div class="project"></div>'
                 });
 
-                this.$el.find('.holder').append(repoView.el);
+                this.$el.find(this.subViews.repos).append(repoView.el);
             }
         },
 
         addUser: function(user) {
-            var $el = this.$el.find('.user')
-
             var userView = new UserView({
                 model : user,
-                $el : $el
+                el : '<div class="user"></div>'
             });
 
-            $el.html(userView.el);
+            this.$el.find(this.subViews.user).html(userView.el);
         },
 
         render: function() {

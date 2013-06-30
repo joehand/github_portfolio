@@ -1,15 +1,12 @@
 var GlobalData = {
     "config" : {
-    	"use_api"		: true,			//Force use of API if true (even if we have data). False will try to use data first then API
+    	"use_api"		: false,			//Force use of API if true (even if we have data). False will try to use data first then API
 		"github_user"   : "joehand",
         "repo_type"     : "owner",     // Type of Repo to Show: "all", "owner", "public", "private", "member"
         "repo_sort"     : "created"   // Order of Repos: (desc) - "created", "updated", "pushed"; (asc) - "full_name"
     },
     "user" : {
-    	"test" : "joe",
-    	"bio"  : "here is a bio abou tjoe!!!",
-    	"id"   : 684965
-
+    	"bio"  : "Empowering global communities to drive their own development through data. <br/> I collect, clean, and analyze data with Python; I produce visualizations with JavaScript. ",
     },
 
     "repos": [
