@@ -1,9 +1,9 @@
 var GlobalData = {
     "config" : {
-    	"use_api"		: false,			//Force use of API if true (even if we have data). False will try to use data first then API
+    	"use_api"		: true,			//Force use of API if true (even if we have data). False will try to use data first then API
 		"github_user"   : "joehand",
         "repo_type"     : "owner",     // Type of Repo to Show: "all", "owner", "public", "private", "member"
-        "repo_sort"     : "updated"   // Order of Repos: (desc) - "created", "updated", "pushed"; (asc) - "full_name"
+        "repo_sort"     : "created"   // Order of Repos: (desc) - "created", "updated", "pushed"; (asc) - "full_name"
     },
     "user" : {
     	"test" : "joe",

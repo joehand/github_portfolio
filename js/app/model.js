@@ -29,6 +29,7 @@ define(['backbone', 'underscore'], function(Backbone, _) {
         initModels : function(user, repos) {
             this.set('user', new User(user));
             this.set('repos', new Repos(repos));
+            this.get('repos').config =  this.get('config');
         },
 
         checkDataReady : function() {
@@ -126,6 +127,21 @@ define(['backbone', 'underscore'], function(Backbone, _) {
         Repos = Backbone.Collection.extend({
             model: Repo,
 
+            comparator : function(repo) {
+                if (!_.isUndefined(this.config)) {
+                    var sorter = this.config.repo_sort;
+
+                    if (sorter == 'full_name') {
+                        return repo.get('name');
+                    } else { 
+                        sorter = sorter + '_at'; //add at for created_at, updated_at, pushed_at
+                        return -repo.get(sorter); //minus to have most recent first
+                    }
+                } else {
+                    return -repo.get('created_at'); //minus to have most recent first
+                }
+            },
+
             parse : function(resp) {
                 //This only runs when getting API data
                 //need to keep our old data in. anything in there overwrites API stuff
@@ -145,7 +161,8 @@ define(['backbone', 'underscore'], function(Backbone, _) {
 
                 //Return the merged array of Repositories
                 return newRepos.concat(_.filter(origRepos, function(r){ return !r.match; }));
-            }
+            },
+
         });
 
 
