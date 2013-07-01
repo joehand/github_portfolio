@@ -18,7 +18,8 @@ define([
         },
 
         render: function() {
-            this.$el.html(this.template(this.model.toJSON()));
+            var color = this.model.collection.config.color;
+            this.$el.html(this.template({'repo' : this.model.toJSON(), 'color' : color}));
             return this;
         }
     });
@@ -82,6 +83,10 @@ define([
         render: function() {
             console.log('RENDER MAIN');
             console.log(this.model.toJSON());
+
+            //set our body color class
+            var color = this.model.get('config').color || 'light';
+            $('body').addClass(color);
 
             this.$el.css('opacity', 0).html(this.template(this.model.toJSON()));
             this.addUser(this.model.get('user'));

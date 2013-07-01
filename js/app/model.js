@@ -155,7 +155,8 @@ define(['backbone', 'underscore'], function(Backbone, _) {
 
                     if (match) {
                         match.match = true;
-                        _.extend(repo, match);
+                        _.defaults(match, repo); //this fills in any undefined/null fields in match
+                        _.extend(repo, match); //this extends repo with any missing keys
                     }
                 });
 

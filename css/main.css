@@ -4,29 +4,66 @@
    Author's custom styles
    ========================================================================== */
 
+/* GOOGLE FONTS */
+@import url(http://fonts.googleapis.com/css?family=Lato:300,700|Old+Standard+TT:400,700,400italic);
 
+/* main body , headers */
 body {
     padding-top: 60px;
     padding-bottom: 40px;
+	font-family: 'Old Standard TT', serif;
+	overflow-x: hidden;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Lato', sans-serif;
+}
+
+/* adjusting for light/dark */
+
+body.light {
+	background:#f0f0f0 url('/img/cream_dust.png') 0 0 repeat;
+}
+
+body.dark {
+	background:#0d0d0d url('/img/blackorchid.png') 0 0 repeat;
+	color:#eee;
+}
+
+@media (min-resolution: 192dpi), (-webkit-min-device-pixel-ratio: 2), (min--moz-device-pixel-ratio: 2), (-o-min-device-pixel-ratio: 2/1), (min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+	body.light {
+		background:#f0f0f0 url('/img/cream_dust_@2x.png') 0 0 repeat;
+	}
+
+	body.dark {
+		background:#0d0d0d url('/img/blackorchid_@2x.png') 0 0 repeat;
+	}
+}
+
+.dark hr {
+	border-top:1px solid #0d0d0d;
+	border-bottom:1px solid #bbb;
+}
 
 /* ===========
 	USER AREA
    =========== */
 
 .user-container {
-	margin-bottom: 75px;
 }
 
 .user-header {
-	font-variant: small-caps;
+	margin-bottom:70px;
 }
 
 .bio {
-	max-width:75%;
+	margin:55px 0 35px;
+	font-family: 'Lato', sans-serif;
+	font-weight:300;
+	font-size: 22px;
 	letter-spacing: 1px;
 	line-height: 1.75em;
+	max-width:95%;
 }
 
 
@@ -34,16 +71,173 @@ body {
 	PROJECTS
    =========== */
 
-.projects-container {
-
-}
+.projects-container {}
 
 .project-inner {
-	border:1px blue solid;
 	margin-bottom: 20px;
+	position: relative;
 }
 
-/* Useful Classes */
+.content-wrapper {
+	margin-top:30px;
+}
+
+
+.project-inner p {
+	font-size: 18px;
+}
+
+.project-info .description {
+	margin: 20px 0 60px;
+}
+
+
+.project-images {
+	position: relative;
+}
+
+.project-images img {
+	height:250px;
+	width:auto;
+	margin-top:20px;
+}
+
+.no-img .row {
+	text-align: center;
+	margin-left:auto;
+	margin-right: auto;
+}
+
+.img .content-wrapper{
+	min-height:280px;
+}
+
+.content-wrapper.center {
+	width:70%;
+}
+
+.content-wrapper.center .span6{
+	margin-left: auto !important;
+	margin-right: auto !important;
+	float:none;
+}
+
+
+/*links*/
+
+.project-links {
+	position: absolute;
+	bottom:0px;
+	font-variant: small-caps;
+	font-family: 'Lato', sans-serif;
+	font-weight: 700;
+	font-size: 16px;
+}
+
+.content-wrapper.center .project-links{
+	position: relative;
+}
+.project-link {
+	padding-right: 15px;
+}
+
+.project-link i {
+	vertical-align: middle;
+	padding-right: 2px;
+}
+
+
+/* ===========
+	FOOTER
+   =========== */
+
+footer {
+	font-size:18px;
+}
+
+footer img {
+	vertical-align: text-top;
+}
+
+
+/* ===========
+	MEDIA QUERIES
+   =========== */
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+
+	.content-wrapper.center {
+		width:90%;
+	}
+
+	.project-inner {
+
+		text-align: center;
+	}	
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+	.content-wrapper.center {
+		width:90%;
+	}
+
+	.project-inner {
+
+		text-align: center;
+	}	
+
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) { 
+
+
+	.project-images img {
+		position: absolute;
+		right: -20px;
+	}
+
+	.no-img .row {
+		text-align: center;
+		margin-left:auto;
+		margin-right: auto;
+	}
+
+	.bio {
+		max-width:90%;
+	}
+
+
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+	.bio {
+		max-width:75%;
+	}
+
+	.no-img .row {
+		text-align: center;
+		margin-left:auto;
+		margin-right: auto;
+	}
+
+	.project-images img {
+		position: absolute;
+		right: -20px;
+	}
+}
+ 
+ 
+ 
+
+
+
+/* ===========
+	Useful Classes
+   =========== */
 
 .center {
 	margin-left:auto;

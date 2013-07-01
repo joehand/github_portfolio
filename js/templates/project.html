@@ -1,25 +1,35 @@
-<article class="span12 project-inner">
-    <h3 class="title"><% if (title) { %><%= title %><% } else { %><%= name %><% } %></h3>    
-    <div class="projectInfo">
-        <p class="description span4"><%= description %></p>
-        <ul class="skillset span4">
-            <% if (language) { %>
-                <li><%= language %></li>
-            <% } %>
-            
-        </ul>
-        <% if (homepage) { %>
-            <p><a class="sitelink" target="_blank" href="<%= homepage %>">view the project</a></p>
-        <% } %>
+<article class="span12 project-inner <% if (repo.img) { %>img<% } else { %>no-img<% } %>">
+    <hr>
+    <div class="content-wrapper <% if (repo.img) { %>span12<% } else { %>center<% } %>">
+        <div class="row">
+            <h3 class="project-title span6"><% if (repo.title) { %><%= repo.title %><% } else { %><%= repo.name %><% } %></h3>
+  
+                <% if (repo.img) { %>
+            <div class="project-images span5">    
+                        <img class="img-polaroid" src="<%= repo.img %>" alt=""/>
+            </div>
+                <% } %>
+        </div>
+        <div class="row">
+            <div class="project-info span6">
+                <p class="description"><%= repo.description %></p>
+                <!--
+                <% if (repo.language) { %>
+                    <p class="language"><%= repo.language %></p>
+                <% } %>
+                -->
+            </div>
+        </div>
+        <div class="row">
 
-        <p><a class="github" target="_blank" href="<%= html_url %>">code on github</a></p>
+            <div class="project-links span6">
+                <% if (repo.homepage) { %>
+                    <a class="project-link project-url" target="_blank" href="http://<%= repo.homepage %>"><i class="icon-share <% if (color == 'dark') { %>icon-white<% } %>"></i> view project</a>
+                <% } %>
+                <% if (repo.html_url) { %>
+                    <a class="project-link project-code" target="_blank" href="<%= repo.html_url %>"><i class="icon-hdd <% if (color == 'dark') { %>icon-white<% } %>"></i> view code</a>
+                <% } %>
+            </div>
+        </div>
     </div>
-          
-        <% if (img) { %>
-    <div class="projectImages span4">
-        <ul id="">
-            <li><img src="<%= img %>" alt=""/></li>
-        </ul>
-    </div>
-        <% } %>
 </article>
